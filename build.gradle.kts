@@ -5,7 +5,7 @@ plugins {
     application
 }
 
-group = "me.user"
+group = "com.raditya"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -16,12 +16,8 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(kotlin("stdlib-js"))
-    // include for server side
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.1")
-    // include for client-side
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.1")
-
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
     testImplementation(kotlin("test-junit"))
 }
 
