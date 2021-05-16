@@ -1,5 +1,6 @@
 import io.reactivex.Observable
-import io.reactivex.subjects.ReplaySubject
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 fun main() {
     ReactiveProgramming()
@@ -9,24 +10,28 @@ fun main() {
 // Operator
 // Observer
 class ReactiveProgramming {
-    val kafka = Kafka
+    val podcast = Podcast
 
     init {
-        kafka.topic
-            .filter { it is Food }
-            .doOnNext {
-                println("Food Topic is : $it")
+        val bobby = podcast.topic
+            .filter {
+                println(System.currentTimeMillis())
+                it is Deddy
             }
-            .subscribe()
+            .debounce(1, TimeUnit.SECONDS)
+            .doOnNext {
+                println(System.currentTimeMillis())
+                println("Bobby Podcast Topic is : $it")
+            }
 
-        kafka.publishTopic(Food.Merchant(1, "kfc"))
-        kafka.publishTopic(Food.Merchant(2, "kfc-depok"))
-        kafka.publishTopic(Pay.Payment(1, Pay.PaymentType.CASH, "Rp.2500"))
+        podcast.publishTopic(AndroidDeveloper.JetpackCompose("florena"))
+        podcast.publishTopic(AndroidDeveloper.JetpackCompose("cheet"))
+        podcast.publishTopic(Deddy.CloseTheDoor)
     }
 }
 
-object Kafka {
-    private val _publisher = ReplaySubject.create<Topic>()
+object Podcast {
+    private val _publisher = PublishSubject.create<Topic>()
     val topic: Observable<Topic>
         get() = _publisher.publish().refCount().hide()
 
@@ -38,26 +43,14 @@ object Kafka {
 sealed class Topic
 
 // GoPay
-sealed class Pay : Topic() {
-    enum class PaymentType {
-        CASH,
-        CREDIT_CARD,
-        PAYLATER,
-        GOPAY
-    }
-
-    data class Payment(
-        val id: Int,
-        val type: PaymentType,
-        val amount: String
-    ) : Pay()
+sealed class AndroidDeveloper : Topic() {
+    data class JetpackCompose(
+        val author: String
+    ) : AndroidDeveloper()
 }
 
-// Food
-sealed class Food : Topic() {
-    data class Merchant(
-        val id: Int,
-        val name: String
-    ) : Food()
+// Deddy
+sealed class Deddy : Topic() {
+    object CloseTheDoor : Deddy()
 }
 
