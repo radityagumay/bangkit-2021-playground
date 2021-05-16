@@ -11,15 +11,11 @@ jobs:
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/openjdk
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
-    environment:
-      JAVA_TOOL_OPTIONS: "-Xmx1024m"
-      GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2"
-      TERM: dumb
     steps:
       - checkout
       - run:
           name: Build Dependencies
-          command: ./gradlew build
+          command: ./mvnw test
 
 workflows:
   # Below is the definition of your workflow.
